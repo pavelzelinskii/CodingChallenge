@@ -12,38 +12,56 @@ package core;
 
 public class Abbreviator {
 
-	public static String abbreviate(String line) {
-		
-		String delimeter = "[ !@#$%^&*()-_,./<>?;':]";
-		String[] words = line.split("");
-		String newLine1 = "";
-		String newLine2 = "";
-		for (int i = 0; i < words.length; i++) {
-
-			String word = words[i];
-
-			if (word.length() >= 4) {
-
-				char oneCharacter1 = word.charAt(0);
-				char oneCharacter2 = word.charAt(word.length() - 1);
-				int number = word.length() - 2;
-				String first = String.valueOf(oneCharacter1);
-				String last = String.valueOf(oneCharacter2);
-				String middle = String.valueOf(number);
-				word = first + middle + last;
-			}
-			
-			newLine1 = newLine1 + word + " ";
-		}
-			newLine2 = newLine1.trim();
-			
-		return newLine2;
-}
-
 	public static void main(String[] args) {
 
-		String line = "internati_onalization lkhkgk! ojii, oiu";
+		String inpStr = "internationalization ^hdgdg)ydg kguiuygk!ghgf";
 
-		System.out.println(abbreviate(line));
+		System.out.println(abbreviate(inpStr));
+
 	}
+
+	private static String abbreviate(String inpStr) {
+
+		inpStr = inpStr + " ";
+		String resultStr = "";
+		String tmpStr = "";
+		char tmpChar = 'A';
+		int charCnt = 0;
+
+		for (int i = 0; i < inpStr.length(); i++) {
+
+			tmpChar = inpStr.charAt(i);
+
+			if (isLetter(tmpChar)) {
+				tmpStr = tmpStr + inpStr.charAt(i);
+				charCnt = charCnt + 1;
+			} else {
+				if (charCnt > 3) {
+					resultStr = resultStr + tmpStr.charAt(0);
+					resultStr = resultStr + (charCnt - 2);
+					resultStr = resultStr + tmpStr.charAt(tmpStr.length() - 1) + inpStr.charAt(i);
+					tmpStr = "";
+					charCnt = 0;
+				} else if (charCnt <= 3) {
+					resultStr = resultStr + tmpStr + inpStr.charAt(i);
+					tmpStr = "";
+					charCnt = 0;
+				} else {
+					resultStr = resultStr + inpStr.charAt(i);
+				}
+			}
+
+		}
+		return resultStr.trim();
+	}
+
+	private static boolean isLetter(char tmpChar) {
+
+		if ((tmpChar >= 'A' && tmpChar <= 'Z') || (tmpChar >= 'a' && tmpChar <= 'z'))
+
+			return true;
+
+		return false;
+	}
+
 }
